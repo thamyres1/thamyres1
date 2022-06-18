@@ -1,0 +1,83 @@
+DROP DATABASE IF EXISTS aula_banco; -- se existir elimine aula_banco
+CREATE DATABASE aula_banco; 		-- criar aula_banco
+USE aula_banco;						-- selecionar aula_banco
+
+CREATE TABLE estado( 				-- criando a tabela estado
+id INT NOT NULL AUTO_INCREMENT
+,nome VARCHAR(200) NOT NULL UNIQUE  
+,sigla CHAR(2) NOT NULL UNIQUE
+,ativo ENUM('S','N') NOT NULL DEFAULT 'S'
+,data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+,CONSTRAINT pk_estado PRIMARY KEY (id)  
+);
+
+CREATE TABLE cidade (				-- criando a tabela cidade
+id INT NOT NULL AUTO_INCREMENT
+,nome VARCHAR(200)  NOT NULL
+,ativo ENUM('S','N') NOT NULL DEFAULT 'S'
+,data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+,estado_id INT NOT NULL 
+,CONSTRAINT pk_cidade PRIMARY KEY (id)
+,CONSTRAINT fk_cidade_estado FOREIGN KEY (estado_id) REFERENCES estado (id)
+,CONSTRAINT cidade_unica UNIQUE(nome, estado_id)
+);
+
+
+/*
+01
+*/
+INSERT INTO estado VALUES (NULL,'ACRE','AC','S','2021-05-01');
+/*
+02
+*/
+INSERT INTO estado (nome,sigla,ativo,data_cadastro) 
+VALUES ('ALAGOAS','AL','S','2021-05-02'); 
+/*
+03
+*/
+INSERT INTO estado (nome,sigla) VALUES ('AMAPÁ','AP'); 
+/*
+04
+*/
+INSERT INTO cidade (id,nome,estado_id,ativo,data_cadastro) VALUES (NULL, 'ACRELANDIA',1,'S','2021-04-28'); 
+INSERT INTO cidade (nome,estado_id,ativo,data_cadastro) VALUES ('ASSIS  BRASIL',1,'S','2021-03-14'); 
+INSERT INTO cidade (nome,estado_id) VALUES ('BRASILEIA',1);
+/*
+05
+*/
+INSERT INTO estado (id,nome,sigla,ativo,data_cadastro)
+VALUES (4,'PARANÁ','PR','S','2022-04-18') , (5,'SÃO PAULO','SP','S','2022-04-18') , (6,'GOIÁS','GO','S','2022-04-18'); 
+/*
+06
+*/
+INSERT INTO estado (id,nome,sigla,ativo,data_cadastro)
+VALUES  (DEFAULT,'AMAZONAS','AM','S','2022-04-18') , (DEFAULT,'ESPÍRITO SANTO','ES','S','2022-04-18'); 
+/*
+07
+*/
+INSERT INTO estado (nome,sigla) VALUES ('MATO GROSSO','MT') , ('RIO GRANDE DO SUL','RS') ; 
+/*
+08
+*/
+INSERT INTO cidade (id,nome,ativo,data_cadastro,estado_id)
+VALUES (4,'RIO BRANCO','S','2022-04-18',3) , (5,'CURITIBA','S','2022-04-18',4) , (6,'CAMPINAS','S','2022-04-18',5);
+
+INSERT INTO cidade (id,nome,ativo,data_cadastro,estado_id)
+VALUES  (DEFAULT,'POSSE','S','2022-04-18',6) , (DEFAULT,'MANAUS','S','2022-04-18',7); 
+
+INSERT INTO cidade (nome,estado_id) VALUES ('SERRA','8') , ('SINOP','9') ; 
+/*
+09
+*/
+CREATE TABLE cliente (
+id INT ,
+nome VARCHAR(200) NOT NULL,
+ativo CHAR(1) NOT NULL DEFAULT 'S',
+data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO cliente (id,nome) VALUES (1,'SAUL') , (2,'PEDRO') ;
+
+SELECT * FROM estado;
+SELECT * FROM cidade;
+SELECT * FROM cliente;
